@@ -4,7 +4,7 @@ module Hotel
     RATE = 200
 
     attr_reader :room_list
-    attr_writer :reservations
+    attr_accessor :reservations
 
     def initialize
 
