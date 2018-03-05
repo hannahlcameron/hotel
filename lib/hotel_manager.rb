@@ -18,5 +18,20 @@ module Hotel
       return room_list
     end
 
+    def get_reservation_id
+      next_reservation_id = reservations.length + 1
+      return next_reservation_id
+    end
+
+    def get_available_room
+      next_room_id = room_list.sample
+    end
+
+    def add_reservation(check_in_date, check_out_date)
+      new_reservataion = Hotel::Reservation.new({reservation_id: get_reservation_id, room_id: get_available_room, check_in: check_in_date, check_out: check_out_date, cost: calculate_cost})
+    end
+
+
+
   end # end of class
 end # end of module
