@@ -10,6 +10,13 @@ module Hotel
       @room_id = input[:room_id]
       @check_in = input[:check_in]
       @check_out = input[:check_out]
+
+      if check_in == check_out
+        raise StandardError.new('The start date and the end date cannot be the same date.')
+      elsif check_in > check_out
+        raise StandardError.new('The end date cannot be before the start date.')
+      end
+
     end
 
     def stay_date_list
