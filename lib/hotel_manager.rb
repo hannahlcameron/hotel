@@ -1,3 +1,5 @@
+require 'pry'
+
 module Hotel
   class HotelManager
 
@@ -14,7 +16,7 @@ module Hotel
     end
 
     def load_rooms
-      room_list = Array('1'..'20')
+      room_list = Array(1..20)
       return room_list
     end
 
@@ -25,11 +27,18 @@ module Hotel
 
     def get_available_room
       next_room_id = room_list.sample
+      # binding.pry
+      return next_room_id
     end
 
-    def add_reservation(check_in_date, check_out_date)
-      new_reservataion = Hotel::Reservation.new({reservation_id: get_reservation_id, room_id: get_available_room, check_in: check_in_date, check_out: check_out_date, cost: calculate_cost})
-    end
+    # def calculate_cost
+    #
+    #   return reservation_cost
+    # end
+
+    # def add_reservation(check_in_date, check_out_date)
+    #   new_reservataion = Hotel::Reservation.new({reservation_id: get_reservation_id, room_id: get_available_room, check_in: check_in_date, check_out: check_out_date, cost: calculate_cost})
+    # end
 
 
 
