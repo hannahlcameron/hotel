@@ -49,13 +49,47 @@ describe 'HotelManager' do
     it 'must return an appropriate room id' do
       @new_hotel = Hotel::HotelManager.new
       room_id = @new_hotel.get_available_room
-      # binding.pry
       room_id.must_be_kind_of Integer
       room_id.must_be :>, 0
       room_id.must_be :<, 21
-
     end
   end # end of get_available_room
+
+  describe 'calculate_duration_of_stay' do
+    before do
+      @new_hotel = Hotel::HotelManager.new
+    end
+
+    it 'returns an integer of the correct duration' do
+    duration = @new_hotel.calculate_duration_of_stay(Date.new(2018, 3, 25), Date.new(2018, 3, 28))
+    duration.must_be_kind_of Integer
+    duration.must_equal 3
+    end
+
+  end
+
+  describe 'calculate_cost' do
+    it 'returns an Integer' do
+      @new_hotel = Hotel::HotelManager.new
+      cost = @new_hotel.calculate_cost(5)
+      cost.must_equal 1000
+    end
+  end # end of describe calculate_cost
+
+  describe 'add_reservation' do
+    it 'creates an instance of Reservation' do
+      @new_hotel = Hotel::HotelManager.new
+
+      @new_hotel.add_reservation(Date.new(2018, 3, 25), Date.new(2018, 3, 28)).must_be_instance_of Hotel::Reservation
+    end
+
+    it 'adds the reservation to array of reservations' do
+      @new_hotel = Hotel::HotelManager.new
+      @new_hotel.reservations.length.must_equal 0
+      @new_hotel.add_reservation(Date.new(2018, 3, 25),   Date.new(2018, 3, 28))
+      @new_hotel.reservations.length.must_equal 1
+    end
+  end # end of describe add_reservation
 
 end # end of describe HotelManager
 
