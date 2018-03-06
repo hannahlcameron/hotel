@@ -50,7 +50,9 @@ module Hotel
       return new_reservation
     end
 
-
+    # def reservations_by_date
+    #
+    # end
 
   end # end of class
 end # end of module

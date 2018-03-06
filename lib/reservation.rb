@@ -11,6 +11,11 @@ module Hotel
       @cost = input[:cost]
     end
 
+    def stay_date_list
+      list_of_dates = (@check_in..@check_out).to_a
+      return list_of_dates
+    end
+
 
   end # end of class
 end # end of module

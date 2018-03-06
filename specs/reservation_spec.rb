@@ -21,4 +21,17 @@ describe 'reservation' do
 
   end # end of initialize
 
+  describe 'stay_date_list' do
+    before do
+      @new_reservation = Hotel::Reservation.new({reservation_id: 1, room_id: 2, check_in: Date.new(2018, 5, 25), check_out: Date.new(2018, 5, 27), cost: 400})
+    end
+
+    it 'returns a list of dates that are covered by a reservation' do
+      date_list = @new_reservation.stay_date_list
+      date_list.must_be_kind_of Array
+      date_list[0].must_be_instance_of Date
+      date_list.length.must_equal 3
+    end
+
+  end
 end # end of describe Reservation
