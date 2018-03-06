@@ -55,27 +55,6 @@ describe 'HotelManager' do
     end
   end # end of get_available_room
 
-  describe 'calculate_duration_of_stay' do
-    before do
-      @new_hotel = Hotel::HotelManager.new
-    end
-
-    it 'returns an integer of the correct duration' do
-    duration = @new_hotel.calculate_duration_of_stay(Date.new(2018, 3, 25), Date.new(2018, 3, 28))
-    duration.must_be_kind_of Integer
-    duration.must_equal 3
-    end
-
-  end
-
-  describe 'calculate_cost' do
-    it 'returns an Integer' do
-      @new_hotel = Hotel::HotelManager.new
-      cost = @new_hotel.calculate_cost(5)
-      cost.must_equal 1000
-    end
-  end # end of describe calculate_cost
-
   describe 'add_reservation' do
     it 'creates an instance of Reservation' do
       @new_hotel = Hotel::HotelManager.new
@@ -90,6 +69,33 @@ describe 'HotelManager' do
       @new_hotel.reservations.length.must_equal 1
     end
   end # end of describe add_reservation
+
+  describe 'reservations_by_date' do
+    before do
+      @overlap_date = Date.new(2018, 5, 26)
+      @new_hotel = Hotel::HotelManager.new
+
+      # Two should contain the overlap date
+      @new_hotel.add_reservation(@overlap_date - 1, @overlap_date + 1)
+      @new_hotel.add_reservation(@overlap_date - 5, @overlap_date + 3)
+
+      # One should not
+      @new_hotel.add_reservation(@overlap_date - 20, @overlap_date - 15)
+    end
+
+    it 'returns an array of reservations for a specific date' do
+      reservation_list = @new_hotel.reservations_by_date(@overlap_date)
+      reservation_list.must_be_instance_of Array
+      reservation_list.length.must_equal 2
+      reservation_list.each do |res|
+        res.must_be_instance_of Hotel::Reservation
+      end
+    end
+
+    # it '' do
+
+    # end
+  end # end of describe reservations_by_date
 
 end # end of describe HotelManager
 
