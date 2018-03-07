@@ -29,16 +29,10 @@ module Hotel
       return next_room_id
     end
 
-    def add_reservation(check_in_date, check_out_date)
-      new_reservation = Hotel::Reservation.new({reservation_id: get_reservation_id, room_id: get_available_room, check_in: check_in_date, check_out: check_out_date})
-      reservations << new_reservation
-      return new_reservation
-    end
-
     def reservations_by_date(date)
       reservation_list = []
       @reservations.each do |reservation|
-        if reservation.stay_date_list.include?(date)
+        if reservation.stay_date_list[0..-2].include?(date)
           reservation_list << reservation
         end
       end
@@ -52,14 +46,15 @@ module Hotel
         raise StandardError.new('The end date cannot be before the start date.')
       end
 
-      potential_dates = (start_date..end_date).to_a
-
+      potential_dates = (start_date..(end_date - 1)).to_a
       conflicting_reservations = []
 
       potential_dates.each do |date|
         conflicting_reservations += reservations_by_date(date)
       end
+
       unavailable_rooms = []
+
       if conflicting_reservations.length > 0
         conflicting_reservations.each do |reservation|
           unavailable_rooms << reservation.room_id
@@ -67,9 +62,18 @@ module Hotel
           return available_rooms
         end
       else
-        return @room_list
+        available_rooms = @room_list
+        return available_rooms
       end
     end
+
+
+    def add_reservation(check_in_date, check_out_date)
+      new_reservation = Hotel::Reservation.new({reservation_id: get_reservation_id, room_id: get_available_room, check_in: check_in_date, check_out: check_out_date})
+      reservations << new_reservation
+      return new_reservation
+    end
+
 
   end # end of class
 end # end of module
