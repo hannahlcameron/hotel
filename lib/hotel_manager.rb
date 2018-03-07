@@ -45,5 +45,31 @@ module Hotel
       return reservation_list
     end
 
+    def find_available_rooms(start_date, end_date)
+      if start_date == end_date
+        raise StandardError.new('The start date and the end date cannot be the same date.')
+      elsif start_date > end_date
+        raise StandardError.new('The end date cannot be before the start date.')
+      end
+
+      potential_dates = (start_date..end_date).to_a
+
+      conflicting_reservations = []
+
+      potential_dates.each do |date|
+        conflicting_reservations += reservations_by_date(date)
+      end
+      unavailable_rooms = []
+      if conflicting_reservations.length > 0
+        conflicting_reservations.each do |reservation|
+          unavailable_rooms << reservation.room_id
+          available_rooms = @room_list - unavailable_rooms
+          return available_rooms
+        end
+      else
+        return @room_list
+      end
+    end
+
   end # end of class
 end # end of module

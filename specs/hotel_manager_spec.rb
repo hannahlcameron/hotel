@@ -92,12 +92,41 @@ describe 'HotelManager' do
       end
     end
 
-    # it '' do
-
-    # end
   end # end of describe reservations_by_date
 
+  describe 'find_available_rooms' do
+    before do
+      @begin_date = Date.new(2018, 5, 26)
+      @end_date = Date.new(2018, 5, 28)
+      @new_hotel = Hotel::HotelManager.new
+    end
+
+    it 'returns correct size list when 1 overlapping date' do
+      # one reservation should affect returned array
+      @new_hotel.add_reservation(@begin_date - 2, @end_date + 3)
+      @new_hotel.add_reservation(@begin_date + 45, @end_date + 47)
+      @new_hotel.find_available_rooms(@begin_date, @end_date).length.must_equal 19
+    end
+
+    it 'returns correct size list when no overlapping dates' do
+      # neither reservation should affect returned array
+      @new_hotel.add_reservation(@begin_date - 20, @end_date - 15)
+      @new_hotel.add_reservation(@begin_date + 45, @end_date + 47)
+      @new_hotel.find_available_rooms(@begin_date, @end_date).length.must_equal 20
+    end
+
+  end # end of describe find_available_rooms
+
 end # end of describe HotelManager
+
+
+
+      # Two should contain the overlap date
+      # @new_hotel.add_reservation(@begin_date - 1, @overlap_date + 1)
+      # @new_hotel.add_reservation(@begin_date- 5, @end_date + 3)
+      #
+      # # One should not
+      # @new_hotel.add_reservation(@begin_date - 20, @end_date - 15)
 
 # check_in_date = Date.new(2018, 4, 15)
 # check_out_date = Date.new(2018, 4, 24)
