@@ -43,12 +43,15 @@ describe 'HotelManager' do
       @new_hotel.reservations.length.must_equal 3
       @new_hotel.get_reservation_id.must_equal 4
     end
+
   end # end of describe 'get_reservation_id'
 
   describe 'get_available_room' do
     it 'must return an appropriate room id' do
       @new_hotel = Hotel::HotelManager.new
-      room_id = @new_hotel.get_available_room
+      @start_date = Date.new(2018, 5, 26)
+      @end_date = Date.new(2018, 5, 28)
+      room_id = @new_hotel.get_available_room(@start_date, @end_date)
       room_id.must_be_kind_of Integer
       room_id.must_be :>, 0
       room_id.must_be :<, 21
@@ -81,9 +84,11 @@ describe 'HotelManager' do
 
       # One should not
       @new_hotel.add_reservation(@overlap_date - 20, @overlap_date - 15)
+      # puts "This is to check what is in #{@new_hotel}"
     end
 
     it 'returns an array of reservations for a specific date' do
+      # binding.pry
       reservation_list = @new_hotel.reservations_by_date(@overlap_date)
       reservation_list.must_be_instance_of Array
       reservation_list.length.must_equal 2
@@ -115,6 +120,17 @@ describe 'HotelManager' do
       @new_hotel.find_available_rooms(@begin_date, @end_date).length.must_equal 20
     end
 
+    it 'raises an error if there are no available rooms' do
+    proc{
+      @new_hotel = Hotel::HotelManager.new
+      check_in_date = Date.new(2018, 3, 12)
+      check_out_date = Date.new(2018, 3, 20)
+      21.times do
+        @new_hotel.add_reservation(check_in_date, check_out_date)
+      end
+      @new_hotel.find_available_rooms(Date.new(2018, 3, 16), Date.new(2018, 3, 18))
+    }.must_raise StandardError
+    end
   end # end of describe find_available_rooms
 
 end # end of describe HotelManager
