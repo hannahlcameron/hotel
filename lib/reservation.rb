@@ -1,7 +1,7 @@
 module Hotel
   class Reservation
 
-        RATE = 200.00
+    RATE = 200.00
 
     attr_accessor :reservation_id, :room_id, :check_in, :check_out
 
