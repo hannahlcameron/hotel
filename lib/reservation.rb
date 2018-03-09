@@ -21,6 +21,7 @@ module Hotel
 
     def stay_date_list
       list_of_dates = (@check_in..@check_out).to_a
+      list_of_dates = list_of_dates[0..-2]
       return list_of_dates
     end
 

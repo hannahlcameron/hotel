@@ -37,7 +37,7 @@ describe 'reservation' do
       date_list = @new_reservation.stay_date_list
       date_list.must_be_kind_of Array
       date_list[0].must_be_instance_of Date
-      date_list.length.must_equal 3
+      date_list.length.must_equal 2
     end
 
   end

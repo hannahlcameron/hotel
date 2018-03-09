@@ -10,7 +10,7 @@ module Hotel
     def initialize
       @room_list = load_rooms
       @reservations = Array.new
-      # puts "This is to check how often this is happening."
+      puts "A new hotel manager has been created."
     end
 
     def load_rooms
@@ -21,9 +21,11 @@ module Hotel
     def get_reservation_id
       if @reservations == []
         next_reservation_id = 1
+        puts "The next reservation will be #{next_reservation_id}"
         return next_reservation_id
       else
         next_reservation_id = @reservations.length + 1
+        puts "The next reservation will be #{next_reservation_id}"
         return next_reservation_id
       end
     end
@@ -31,7 +33,7 @@ module Hotel
     def reservations_by_date(date)
       reservation_list = []
       @reservations.each do |reservation|
-        if reservation.stay_date_list[0..-2].include?(date)
+        if reservation.stay_date_list.include?(date)
           reservation_list << reservation
         end
       end
@@ -42,42 +44,64 @@ module Hotel
 
       potential_dates = (start_date..(end_date - 1)).to_a
 
-      conflicting_reservations = []
-
-      potential_dates.each do |date|
-        conflicting_reservations += reservations_by_date(date)
-      end
-      puts "*conflicting_reservations are #{conflicting_reservations}"
       unavailable_rooms = []
 
-      if conflicting_reservations.length > 0
-        conflicting_reservations.each do |reservation|
+      @reservations.each do |reservation|
+        # date_check_list is list of all dates in a reservation
+        date_check_list = reservation.stay_date_list
+        checked_date_list = date_check_list - potential_dates
+        if checked_date_list.length < date_check_list.length
           unavailable_rooms << reservation.room_id
-          available_rooms = @room_list - unavailable_rooms
-          puts "**Since the following are conflicting_reservations #{conflicting_reservations}, the available_rooms list is #{available_rooms}"
-          return available_rooms
         end
-      else
-        available_rooms = @room_list
-        puts "**no conflicting_reservations, so available_rooms is #{available_rooms}"
-        return available_rooms
       end
+
+      if unavailable_rooms.length == 20
+        raise StandardError.new('There are no available rooms at this time.')
+      elsif unavailable_rooms.length > 0
+        available_rooms = @room_list - unavailable_rooms
+        else
+          available_rooms = @room_list
+      end
+      return available_rooms
     end
+      # potential_dates.each do |date|
+      #   if
+      #   conflicting_reservations += reservations_by_date(date)
+      # end
+      # puts "*There are #{conflicting_reservations.length} conflicting_reservations "
+      # unavailable_rooms = []
+      #
+      # if unavailable_rooms.length == 20
+      #   raise StandardError.new('There are no available rooms at this time.')
+      # elsif conflicting_reservations.length > 0
+      #   conflicting_reservations.each do |reservation|
+      #     unavailable_rooms << reservation.room_id
+      #     available_rooms = @room_list - unavailable_rooms
+      #     puts "**There are #{unavailable_rooms.length} unavailable rooms, the available_rooms list is #{available_rooms}"
+      #     return available_rooms
+      #   end
+      # else
+      #   available_rooms = @room_list
+      #   puts "**no conflicting_reservations, so available_rooms is #{available_rooms}"
+      #   return available_rooms
+      # end
+
 
     def get_available_room(check_in_date, check_out_date)
       potential_rooms = find_available_rooms(check_in_date, check_out_date)
-      puts "There are now #{potential_rooms.length} rooms"
-      if potential_rooms.length >= 1
-        next_room_id = potential_rooms.first
-        return next_room_id
-      else
-        raise StandardError.new('There are no available rooms at this time.')
-      end
+      # if potential_rooms.length >= 1
+      next_room_id = potential_rooms.first
+      puts "the next room id will be #{next_room_id}"
+      return next_room_id
+      # else
+      #   raise StandardError.new('There are no available rooms at this time.')
+      # end
     end
 
     def add_reservation(check_in_date, check_out_date)
       new_reservation = Hotel::Reservation.new({reservation_id: get_reservation_id, room_id: get_available_room(check_in_date, check_out_date), check_in: check_in_date, check_out: check_out_date})
       @reservations.push(new_reservation)
+      puts "the new reservation is #{new_reservation}."
       return new_reservation
     end
 

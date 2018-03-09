@@ -100,13 +100,12 @@ describe 'HotelManager' do
   end # end of describe reservations_by_date
 
   describe 'find_available_rooms' do
-    before do
+
+    it 'returns correct size list when 1 overlapping date' do
       @begin_date = Date.new(2018, 5, 26)
       @end_date = Date.new(2018, 5, 28)
       @new_hotel = Hotel::HotelManager.new
-    end
 
-    it 'returns correct size list when 1 overlapping date' do
       # one reservation should affect returned array
       @new_hotel.add_reservation(@begin_date - 2, @end_date + 3)
       @new_hotel.add_reservation(@begin_date + 45, @end_date + 47)
@@ -114,6 +113,9 @@ describe 'HotelManager' do
     end
 
     it 'returns correct size list when no overlapping dates' do
+      @begin_date = Date.new(2018, 5, 26)
+      @end_date = Date.new(2018, 5, 28)
+      @new_hotel = Hotel::HotelManager.new
       # neither reservation should affect returned array
       @new_hotel.add_reservation(@begin_date - 20, @end_date - 15)
       @new_hotel.add_reservation(@begin_date + 45, @end_date + 47)
@@ -128,7 +130,7 @@ describe 'HotelManager' do
       21.times do
         @new_hotel.add_reservation(check_in_date, check_out_date)
       end
-      @new_hotel.find_available_rooms(Date.new(2018, 3, 16), Date.new(2018, 3, 18))
+      @new_hotel.find_available_rooms(Date.new(2018, 3, 12), Date.new(2018, 3, 20))
     }.must_raise StandardError
     end
   end # end of describe find_available_rooms
