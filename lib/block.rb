@@ -14,6 +14,12 @@ module Hotel
       @block_size = input[:block_size]
       @reserved_rooms = Array.new
 
+      if block_size > 5
+        raise StandardError.new('The maximum bock size is 5 rooms.')
+      # elsif block_size < 2
+      #   raise StandardError.new('The minimum block size is 2 rooms.')
+      end
+
     end
 
     def calculate_cost
@@ -21,6 +27,8 @@ module Hotel
        reservation_cost = duration * (RATE * RATE_DISCOUNT)
       return reservation_cost
     end
+
+
 
   end # end of block
 end # end of module

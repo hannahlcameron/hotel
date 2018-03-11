@@ -78,7 +78,7 @@ module Hotel
 
     def add_block(block_size, check_in_date, check_out_date)
       new_block = Hotel::Block.new({reservation_id: get_reservation_id, block_size: block_size, check_in: check_in_date, check_out: check_out_date})
-      @reservations.push(new_reservation)
+      @reservations.push(new_block)
     end
 
   end # end of class

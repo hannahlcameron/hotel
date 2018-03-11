@@ -25,6 +25,14 @@ describe 'block' do
       @new_block1 = Hotel::Block({reservation_id: 1, block_size: 2, check_in: Date.new(2018, 5, 25), check_out: Date.new(2018, 5, 19)})
       }.must_raise StandardError
     end
+
+    it 'raises an error if provided an invalid date range' do
+
+      # the start and end dates are the same
+      proc{
+      @new_block = Hotel::Block({reservation_id: 1, block_size: 6, check_in: Date.new(2018, 5, 25), check_out: Date.new(2018, 5, 26)})
+      }.must_raise StandardError
+    end
   end # end of describe initialize
 
   describe 'calculate_cost' do
@@ -36,4 +44,5 @@ describe 'block' do
     end
   end
 
-end # end of describe block
+
+end # end of describe Block
