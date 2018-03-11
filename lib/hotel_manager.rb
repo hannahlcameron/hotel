@@ -10,7 +10,7 @@ module Hotel
     def initialize
       @room_list = load_rooms
       @reservations = Array.new
-      puts "A new hotel manager has been created."
+      # puts "A new hotel manager has been created."
     end
 
     def load_rooms
@@ -22,11 +22,11 @@ module Hotel
 
       if @reservations == []
         next_reservation_id = 1
-        puts "The next reservation will be #{next_reservation_id}"
+        # puts "The next reservation will be #{next_reservation_id}"
         return next_reservation_id
       else
         next_reservation_id = @reservations.length + 1
-        puts "The next reservation will be #{next_reservation_id}"
+        # puts "The next reservation will be #{next_reservation_id}"
         return next_reservation_id
       end
     end
@@ -65,15 +65,20 @@ module Hotel
     def get_available_room(check_in_date, check_out_date)
       potential_rooms = find_available_rooms(check_in_date, check_out_date)
       next_room_id = potential_rooms.first
-      puts "the next room id will be #{next_room_id}"
+      # puts "the next room id will be #{next_room_id}"
       return next_room_id
     end
 
     def add_reservation(check_in_date, check_out_date)
       new_reservation = Hotel::Reservation.new({reservation_id: get_reservation_id, room_id: get_available_room(check_in_date, check_out_date), check_in: check_in_date, check_out: check_out_date})
       @reservations.push(new_reservation)
-      puts "the new reservation is #{new_reservation}."
+      # puts "the new reservation is #{new_reservation}."
       return new_reservation
+    end
+
+    def add_block(block_size, check_in_date, check_out_date)
+      new_block = Hotel::Block.new({reservation_id: get_reservation_id, block_size: block_size, check_in: check_in_date, check_out: check_out_date})
+      @reservations.push(new_reservation)
     end
 
   end # end of class
