@@ -75,6 +75,6 @@ module Hotel
       puts "the new reservation is #{new_reservation}."
       return new_reservation
     end
-    
+
   end # end of class
 end # end of module

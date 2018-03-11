@@ -1,3 +1,6 @@
+require 'date'
+require 'pry'
+
 module Hotel
   class Reservation
 
