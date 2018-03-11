@@ -16,8 +16,8 @@ module Hotel
 
       if block_size > 5
         raise StandardError.new('The maximum bock size is 5 rooms.')
-      # elsif block_size < 2
-      #   raise StandardError.new('The minimum block size is 2 rooms.')
+      elsif block_size < 2
+        raise StandardError.new('The minimum block size is 2 rooms.')
       end
 
     end
